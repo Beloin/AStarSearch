@@ -29,6 +29,9 @@ def a_star(start: int, meta: int, vs: ValuedStates):
     g_costs = []
     back_w = []
 
+    # TODO: For other problems we wont have the full size of the problem...
+    #  We must implement getOrInf, getOrNone, insert(index)
+    #  So we can use it to any given problem (like mosaics problem)
     for _ in range(vs.size()):
         f_costs.append(inf)
         g_costs.append(inf)
