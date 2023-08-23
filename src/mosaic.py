@@ -141,4 +141,4 @@ class MosaicValuedStates(ValuedStates):
         return d
 
     def size(self):
-        return 800_000  # Created while I don't implement a new star algorithm that does't need size
+        return 362_880  # Created while I don't implement a new star algorithm that does't need size
