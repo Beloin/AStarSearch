@@ -23,8 +23,15 @@ class ValuedStates(abc.ABC):
     def get_descendants(self, s: int) -> list[int]:
         pass
 
+    @abc.abstractmethod
+    def is_meta(self, s: int, e: int = None):
+        pass
+
 
 class MatrixValuedStates(ValuedStates):
+
+    def is_meta(self, s: int, e: int = None):
+        return s == e
 
     def __init__(self, vertices: int):
         self._size = vertices

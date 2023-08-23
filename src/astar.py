@@ -1,4 +1,5 @@
 from math import inf
+from typing import Union
 
 from src.pqueue import PriorityQueue
 from src.vstates import MatrixValuedStates, ValuedStates
@@ -24,7 +25,8 @@ def get_path(meta: int, back_w: list):
     return path[::-1]
 
 
-def a_star(start: int, meta: int, vs: ValuedStates):
+# TODO: We get on a list limit pretty fast... Implement a list that validate if index is out of range and return inf
+def a_star(vs: ValuedStates, start: int, meta: Union[None, int] = None):
     f_costs = []
     g_costs = []
     back_w = []
@@ -47,10 +49,12 @@ def a_star(start: int, meta: int, vs: ValuedStates):
 
     while pq.size() > 0:
         crr, fn = pq.pop()
-        if crr == meta:
+
+        if vs.is_meta(crr, meta):
             return get_path(crr, back_w), 0
 
-        for des in vs.get_descendants(crr):
+        descendants = vs.get_descendants(crr)
+        for des in descendants:
             gd = g_costs[crr] + vs.get_g_cost(crr, des)
 
             if gd < g_costs[des]:
@@ -79,5 +83,5 @@ if __name__ == '__main__':
     vs.add_edge(1, 3, 500)
     vs.add_edge(2, 3, 20)
 
-    star, code = a_star(0, 3, vs)
+    star, code = a_star(vs, 0, 3)
     print(star)

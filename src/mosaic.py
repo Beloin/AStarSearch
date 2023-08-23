@@ -14,23 +14,41 @@ mosaic_example = []
 
 class MosaicValuedStates(ValuedStates):
 
-    def __init__(self):
+    def __init__(self, initial_state=None):
         self._mosaic_list = []
         self._id_counter = 0
 
-        self.mosaic = self.new_mosaic(random.sample(range(0, 9), 8))
+        self.new_mosaic(random.sample(range(0, 9), 9) if initial_state is None else initial_state)
+
+    def is_meta(self, s: int, e: int = None):
+        _, mosaic = self._mosaic_list[s]
+        for i in range(len(mosaic) - 1):
+            if i + 1 != mosaic[i]:
+                return False
+
+        return True
 
     def new_mosaic(self, new_mosaic):
-        mosaic = (self._id_counter, new_mosaic)
+        mid = self._id_counter
+        has_m = False
+        for saved_id, mosaic in self._mosaic_list:
+            if mosaic == new_mosaic:
+                mid = saved_id
+                has_m = True
+                break
+
+        if not has_m:
+            self._id_counter += 1
+
+        mosaic = (mid, new_mosaic)
         self._mosaic_list.append(mosaic)
-        self._id_counter += 1
-        return mosaic
+        return mid
 
     def get_g_cost(self, s: int, e: int) -> float:
         """
         g_cost will be the real cost... Will always be one
         """
-        pass
+        return 1
 
     def get_h_cost(self, s: int, e: int) -> float:
         """
@@ -40,11 +58,12 @@ class MosaicValuedStates(ValuedStates):
 
         # First we will use number of deallocated pieces
         total_dst = 0
-        for i in range(9):
-            total_dst += mosaic[i] != i
+        for i in range(len(mosaic) - 1):
+            total_dst += mosaic[i] != i + 1
 
         return total_dst
 
+    # TODO: Is infinite because the states are not saved, but they are created another one!!!!
     def get_descendants(self, s: int) -> list[int]:
         d = []
         _, mosaic = self._mosaic_list[s]
@@ -53,40 +72,73 @@ class MosaicValuedStates(ValuedStates):
             arr = mosaic[:]
             arr[a], arr[b] = arr[b], arr[a]
 
-            d.append(self._id_counter)
-            self.new_mosaic(arr)
+            mid = self.new_mosaic(arr)
+            d.append(mid)
 
         for i in range(9):
             if mosaic[i] == 0:
                 if i == 0:
-                    flip(i, i+1)
-                    flip(i, i+3)
-                    new_mosaic_01 = mosaic[:]
-                    new_mosaic_01[0], new_mosaic_01[1] = new_mosaic_01[1], new_mosaic_01[0]
-
-                    d.append(self._id_counter)
-                    self.new_mosaic(new_mosaic_01)
-
-                    new_mosaic_02 = mosaic[:]
-                    new_mosaic_02[0], new_mosaic_02[3] = new_mosaic_02[3], new_mosaic_02[0]
-
-                    d.append(self._id_counter)
-                    self.new_mosaic(new_mosaic_02)
+                    #   |   | 2 | 4 |
+                    #   | 5 | 7 | 6 |
+                    #   | 8 | 3 | 1 |
+                    flip(i, i + 1)
+                    flip(i, i + 3)
                 elif i == 1:
-                    new_mosaic_01 = mosaic[:]
-                    new_mosaic_01[1], new_mosaic_01[0] = new_mosaic_01[0], new_mosaic_01[1]
+                    #   | 2 |   | 4 |
+                    #   | 5 | 7 | 6 |
+                    #   | 8 | 3 | 1 |
+                    flip(i, i + 1)
+                    flip(i, i - 1)
+                    flip(i, i + 3)
+                elif i == 2:
+                    #   | 2 | 4 |   |
+                    #   | 5 | 7 | 6 |
+                    #   | 8 | 3 | 1 |
+                    flip(i, i + 3)
+                    flip(i, i - 1)
+                elif i == 3:
+                    #   | 2 | 4 | 5 |
+                    #   |   | 7 | 6 |
+                    #   | 8 | 3 | 1 |
+                    flip(i, i + 1)
+                    flip(i, i + 3)
+                    flip(i, i - 3)
+                elif i == 4:
+                    #   | 2 | 4 | 5 |
+                    #   | 7 |   | 6 |
+                    #   | 8 | 3 | 1 |
+                    flip(i, i + 1)
+                    flip(i, i - 1)
+                    flip(i, i + 3)
+                    flip(i, i - 3)
+                elif i == 5:
+                    #   | 2 | 4 | 5 |
+                    #   | 7 | 6 |   |
+                    #   | 8 | 3 | 1 |
+                    flip(i, i - 1)
+                    flip(i, i + 3)
+                    flip(i, i - 3)
+                elif i == 6:
+                    #   | 2 | 4 | 5 |
+                    #   | 7 | 6 | 8 |
+                    #   |   | 3 | 1 |
+                    flip(i, i - 1)
+                    flip(i, i - 3)
+                elif i == 7:
+                    #   | 2 | 4 | 5 |
+                    #   | 7 | 6 | 8 |
+                    #   | 3 |   | 1 |
+                    flip(i, i - 1)
+                    flip(i, i + 1)
+                    flip(i, i - 3)
+                elif i == 8:
+                    #   | 2 | 4 | 5 |
+                    #   | 7 | 6 | 8 |
+                    #   | 3 | 1 |   |
+                    flip(i, i - 1)
+                    flip(i, i - 3)
 
-                    d.append(self._id_counter)
-                    self.new_mosaic(new_mosaic_01)
-
-                    new_mosaic_02 = mosaic[:]
-                    new_mosaic_02[1], new_mosaic_02[4] = new_mosaic_02[4], new_mosaic_02[1]
-
-                    d.append(self._id_counter)
-                    self.new_mosaic(new_mosaic_02)
-
-                    new_mosaic_03 = mosaic[:]
-                    new_mosaic_02[1], new_mosaic_02[4] = new_mosaic_02[4], new_mosaic_02[1]
+        return d
 
     def size(self):
-        return 100_000  # Created while I don't implement a new star algorithm that does't need size
+        return 800_000  # Created while I don't implement a new star algorithm that does't need size
