@@ -2,6 +2,7 @@ from src.astar import a_star
 from src.mosaic import MosaicValuedStates
 
 if __name__ == "__main__":
+    # TODO: Why this hives problem?
     # mosaic = MosaicValuedStates([2, 8, 3, 1, 6, 4, 7, 0, 5])
     # mosaic = MosaicValuedStates([7, 2, 4, 5, 0, 6, 8, 3, 1])
     # mosaic = MosaicValuedStates([1, 2, 3, 4, 5, 6, 7, 8, 0])
@@ -20,7 +21,14 @@ if __name__ == "__main__":
     #   | 1 | 2 | 3 |
     #   | 4 | 8 | 5 |
     #   | 0 | 7 | 6 |
-    mosaic = MosaicValuedStates([1, 2, 3, 4, 8, 5, 0, 7, 6])
+    # mosaic = MosaicValuedStates([1, 2, 3, 4, 8, 5, 0, 7, 6])
+
+    # TODO: Why this does not wotk?
+    #   | 1 | 6 | 2 |
+    #   | 7 | 0 | 5 |
+    #   | 8 | 4 | 3 |
+    #   SEE: https://deniz.co/8-puzzle-solver/
+    mosaic = MosaicValuedStates([1, 6, 2, 7, 0, 5, 8, 4, 3])
 
     star, code = a_star(mosaic, 0)
     print(star)
