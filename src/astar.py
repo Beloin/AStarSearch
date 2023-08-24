@@ -42,13 +42,13 @@ def a_star(vs: ValuedStates, start: int, meta: Union[None, int] = None):
     pq = PriorityQueue()
     fs_cost = vs.get_h_cost(start, meta)
 
-    pq.push((start, fs_cost))
+    pq.push((fs_cost, start))
 
     g_costs[start] = 0
     f_costs[start] = fs_cost
 
     while pq.size() > 0:
-        crr, fn = pq.pop()
+        fn, crr = pq.pop()
 
         if vs.is_meta(crr, meta):
             return get_path(crr, back_w), 0
@@ -64,7 +64,7 @@ def a_star(vs: ValuedStates, start: int, meta: Union[None, int] = None):
                 f_costs[des] = fd
                 back_w[des] = crr
 
-                pq.push((des, fd))
+                pq.push((fd, des))
 
     return None, 1
 
@@ -72,7 +72,7 @@ def a_star(vs: ValuedStates, start: int, meta: Union[None, int] = None):
 if __name__ == '__main__':
     vs = MatrixValuedStates(4)
 
-    #   0 -(10)-> 1, 0 -(1)-> 2
+    #   0 -(10)-> 1, 0 -(100)-> 2
     #   1 -(15)-> 2, 1 -(500)-> 3
     #   2 -(20)-> 3
     # Fastest path: 0 --> 1 --> 2 --> 3

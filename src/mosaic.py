@@ -63,7 +63,6 @@ class MosaicValuedStates(ValuedStates):
 
         return total_dst
 
-    # TODO: Is infinite because the states are not saved, but they are created another one!!!!
     def get_descendants(self, s: int) -> list[int]:
         d = []
         _, mosaic = self._mosaic_list[s]
