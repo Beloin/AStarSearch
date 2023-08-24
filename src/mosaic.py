@@ -18,7 +18,7 @@ class MosaicValuedStates(ValuedStates):
         self._mosaic_list = []
         self._id_counter = 0
 
-        self.new_mosaic(random.sample(range(0, 9), 9) if initial_state is None else initial_state)
+        self._new_mosaic(random.sample(range(0, 9), 9) if initial_state is None else initial_state)
 
     def is_meta(self, s: int, e: int = None):
         _, mosaic = self._mosaic_list[s]
@@ -28,7 +28,7 @@ class MosaicValuedStates(ValuedStates):
 
         return True
 
-    def new_mosaic(self, new_mosaic):
+    def _new_mosaic(self, new_mosaic):
         mid = self._id_counter
         has_m = False
         for saved_id, mosaic in self._mosaic_list:
@@ -71,7 +71,7 @@ class MosaicValuedStates(ValuedStates):
             arr = mosaic[:]
             arr[a], arr[b] = arr[b], arr[a]
 
-            mid = self.new_mosaic(arr)
+            mid = self._new_mosaic(arr)
             d.append(mid)
 
         for i in range(9):
@@ -138,6 +138,12 @@ class MosaicValuedStates(ValuedStates):
                     flip(i, i - 3)
 
         return d
+
+    def translate(self, arr: list[int]):
+        r = []
+        for i in arr:
+            r.append(self._mosaic_list[i])
+        return r
 
     def size(self):
         return 362_880  # Created while I don't implement a new star algorithm that does't need size
