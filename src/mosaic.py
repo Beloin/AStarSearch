@@ -122,7 +122,7 @@ class MosaicValuedStates(ValuedStates):
                     #   | 2 | 4 | 5 |
                     #   | 7 | 6 | 8 |
                     #   |   | 3 | 1 |
-                    flip(i, i - 1)
+                    flip(i, i + 1)
                     flip(i, i - 3)
                 elif i == 7:
                     #   | 2 | 4 | 5 |
