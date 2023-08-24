@@ -40,6 +40,7 @@ class MosaicValuedStates(ValuedStates):
         if not has_m:
             self._id_counter += 1
 
+        # TODO: there's no need to be an Tuple, since the Id will be the position in list
         mosaic = (mid, new_mosaic)
         self._mosaic_list.append(mosaic)
         return mid
@@ -60,6 +61,7 @@ class MosaicValuedStates(ValuedStates):
         total_dst = 0
         for i in range(len(mosaic) - 1):
             total_dst += mosaic[i] != i + 1
+        total_dst += mosaic[len(mosaic) - 1] != 0
 
         return total_dst
 
@@ -142,7 +144,7 @@ class MosaicValuedStates(ValuedStates):
     def translate(self, arr: list[int]):
         r = []
         for i in arr:
-            r.append(self._mosaic_list[i])
+            r.append(self._mosaic_list[i][1])
         return r
 
     def size(self):
