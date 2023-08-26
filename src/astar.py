@@ -4,16 +4,6 @@ from typing import Union
 from src.pqueue import PriorityQueue
 from src.vstates import MatrixValuedStates, ValuedStates
 
-# adjacency list
-# incidence list
-# adjacency matrix -> We can implement the costs in here...
-# incidence matrix
-
-# Adjacency matrix with cost values:
-#   0 == No edge
-#   N = cost
-adjacency_mx = []
-
 
 def a_star(vs: ValuedStates, start: int, meta: Union[None, int] = None):
     f_costs = {}

@@ -2,13 +2,6 @@ import abc
 import math
 
 
-def h(s, e):
-    return ((math.pow(math.e, -s / 2)) * 10) * e
-
-
-# TODO: Try to do this for Mosaics problem
-#  We can do it because we can store state references inside the memory...
-#  id 1 = [0 0 1] ... and so on
 class ValuedStates(abc.ABC):
 
     @abc.abstractmethod
@@ -26,6 +19,10 @@ class ValuedStates(abc.ABC):
     @abc.abstractmethod
     def is_meta(self, s: int, e: int = None):
         pass
+
+
+def h(s, e):
+    return ((math.pow(math.e, -s / 2)) * 10) * e
 
 
 class MatrixValuedStates(ValuedStates):
