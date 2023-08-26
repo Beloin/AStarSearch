@@ -15,29 +15,10 @@ from src.vstates import MatrixValuedStates, ValuedStates
 adjacency_mx = []
 
 
-def get_path(meta: int, back_w: list):
-    path = [meta]
-    i = back_w[meta]
-    while i is not None:
-        path.append(i)
-        i = back_w[i]
-
-    return path[::-1]
-
-
-# TODO: We get on a list limit pretty fast... Implement a list that validate if index is out of range and return inf
 def a_star(vs: ValuedStates, start: int, meta: Union[None, int] = None):
-    f_costs = []
-    g_costs = []
-    back_w = []
-
-    # TODO: For other problems we wont have the full size of the problem...
-    #  We must implement getOrInf, getOrNone, insert(index)
-    #  So we can use it to any given problem (like mosaics problem)
-    for _ in range(vs.size()):
-        f_costs.append(inf)
-        g_costs.append(inf)
-        back_w.append(None)
+    f_costs = {}
+    g_costs = {}
+    back_w = {}
 
     pq = PriorityQueue()
     fs_cost = vs.get_h_cost(start, meta)
@@ -57,7 +38,7 @@ def a_star(vs: ValuedStates, start: int, meta: Union[None, int] = None):
         for des in descendants:
             gd = g_costs[crr] + vs.get_g_cost(crr, des)
 
-            if gd < g_costs[des]:
+            if gd < get_value_or_inf(g_costs, des):
                 fd = gd + vs.get_h_cost(des, meta)
 
                 g_costs[des] = gd
@@ -67,6 +48,21 @@ def a_star(vs: ValuedStates, start: int, meta: Union[None, int] = None):
                 pq.push((fd, des))
 
     return None, 1
+
+
+def get_path(meta: int, back_w: dict):
+    path = [meta]
+    i = back_w[meta]
+    while i is not None:
+        path.append(i)
+        i = back_w.get(i)
+
+    return path[::-1]
+
+
+def get_value_or_inf(arr: list | dict, i: int):
+    item = arr.get(i)
+    return inf if item is None else item
 
 
 if __name__ == '__main__':

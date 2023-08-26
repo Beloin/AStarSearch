@@ -1,6 +1,5 @@
 from src.astar import a_star
 from src.mosaic import MosaicValuedStates
-import random
 
 
 def test_mosaic(mosaic):
@@ -13,6 +12,7 @@ def test_mosaic(mosaic):
 
 
 def main_01():
+    # OK
     #   | 1 | 2 | 3 |
     #   | 4 | 5 | 6 |
     #   | 0 | 7 | 8 |
