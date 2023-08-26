@@ -8,8 +8,25 @@ import random
 
 
 # 0 Will be used to represent the "empty" block
-
 mosaic_example = []
+
+
+def generate_random_mosaic():
+    arr = []
+    while len(arr) == 0 or not is_solvable(arr):
+        arr = random.sample(range(0, 9), 9)
+
+    return arr
+
+
+def is_solvable(arr: list):
+    c = 0
+    for i in range(len(arr)):
+        for j in range(i, len(arr)):
+            if arr[i] != 0 and arr[j] != 0 and arr[i] > arr[j]:
+                c += 1
+
+    return c % 2 == 0
 
 
 class MosaicValuedStates(ValuedStates):
@@ -18,7 +35,7 @@ class MosaicValuedStates(ValuedStates):
         self._mosaic_list = []
         self._id_counter = 0
 
-        self._new_mosaic(random.sample(range(0, 9), 9) if initial_state is None else initial_state)
+        self._new_mosaic(generate_random_mosaic() if initial_state is None else initial_state)
 
     def is_meta(self, s: int, e: int = None):
         _, mosaic = self._mosaic_list[s]

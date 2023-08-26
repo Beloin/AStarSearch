@@ -1,5 +1,6 @@
 from src.astar import a_star
 from src.mosaic import MosaicValuedStates
+import random
 
 
 def test_mosaic(mosaic):
@@ -11,7 +12,7 @@ def test_mosaic(mosaic):
         print(translate)
 
 
-if __name__ == "__main__":
+def main_01():
     #   | 1 | 2 | 3 |
     #   | 4 | 5 | 6 |
     #   | 0 | 7 | 8 |
@@ -54,3 +55,12 @@ if __name__ == "__main__":
     mosaic = MosaicValuedStates([4, 1, 5, 7, 3, 2, 0, 8, 6])
     test_mosaic(mosaic)
 
+
+def main_02():
+    mosaic = MosaicValuedStates()
+    test_mosaic(mosaic)
+
+
+if __name__ == "__main__":
+    # main_01()
+    main_02()
