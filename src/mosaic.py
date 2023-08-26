@@ -1,14 +1,12 @@
 from src.vstates import ValuedStates
 import random
 
+
 # Mosaics:
 #   | 7 | 2 | 4 |       | 1 | 2 | 3 |
 #   | 5 |   | 6 |  -->  | 4 | 5 | 6 |
 #   | 8 | 3 | 1 |       | 7 | 8 |   |
-
-
 # 0 Will be used to represent the "empty" block
-mosaic_example = []
 
 
 def generate_random_mosaic():
@@ -62,7 +60,6 @@ class MosaicValuedStates(ValuedStates):
         if not has_m:
             self._id_counter += 1
 
-        # TODO: there's no need to be an Tuple, since the Id will be the position in list
         mosaic = (mid, new_mosaic)
         self._mosaic_list.append(mosaic)
         return True, mid
@@ -87,7 +84,6 @@ class MosaicValuedStates(ValuedStates):
 
         return total_dst
 
-    # TODO: We are getting to already seen node...
     def get_descendants(self, s: int) -> list[int]:
         d = []
         _, mosaic = self._mosaic_list[s]
