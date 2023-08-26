@@ -28,14 +28,19 @@ class MosaicValuedStates(ValuedStates):
 
         return True
 
-    def _new_mosaic(self, new_mosaic):
+    def _new_mosaic(self, new_mosaic: list[int]) -> tuple[bool, int]:
+        """
+
+        @param new_mosaic:
+        @return: True if created new mosaic index and the mosaic's id
+        """
         mid = self._id_counter
         has_m = False
         for saved_id, mosaic in self._mosaic_list:
             if mosaic == new_mosaic:
                 mid = saved_id
                 has_m = True
-                break
+                return False, mid
 
         if not has_m:
             self._id_counter += 1
@@ -43,7 +48,7 @@ class MosaicValuedStates(ValuedStates):
         # TODO: there's no need to be an Tuple, since the Id will be the position in list
         mosaic = (mid, new_mosaic)
         self._mosaic_list.append(mosaic)
-        return mid
+        return True, mid
 
     def get_g_cost(self, s: int, e: int) -> float:
         """
@@ -65,6 +70,7 @@ class MosaicValuedStates(ValuedStates):
 
         return total_dst
 
+    # TODO: We are getting to already seen node...
     def get_descendants(self, s: int) -> list[int]:
         d = []
         _, mosaic = self._mosaic_list[s]
@@ -73,8 +79,10 @@ class MosaicValuedStates(ValuedStates):
             arr = mosaic[:]
             arr[a], arr[b] = arr[b], arr[a]
 
-            mid = self._new_mosaic(arr)
-            d.append(mid)
+            new, m_id = self._new_mosaic(arr)
+
+            if new:
+                d.append(m_id)
 
         for i in range(9):
             if mosaic[i] == 0:
