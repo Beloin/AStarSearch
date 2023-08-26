@@ -2,7 +2,7 @@ from src.astar import a_star
 from src.mosaic import MosaicValuedStates
 
 
-def test_mosaic(mosaic):
+def test_mosaic(mosaic: MosaicValuedStates):
     star, code = a_star(mosaic, 0)
     print(star)
 
